@@ -19,7 +19,7 @@ public class DriveSubsystem extends BaseDriveSubsystem implements DataFrameRefre
 
     public final XCANMotorController frontLeft;
     public final XCANMotorController frontRight;
-
+    public boolean isPrecisionOn;
     DoubleProperty dp;
 
     @Inject
@@ -36,15 +36,21 @@ public class DriveSubsystem extends BaseDriveSubsystem implements DataFrameRefre
         dp = pf.createPersistentProperty("DriveSubsystem", 1.5);
     }
 
-    public void tankDrive(double leftPower, double rightPower) {
+    public void tankDrive(double leftValueY, double leftValueX) {
         // You'll need to take these power values and assign them to all of the motors.
         // As an example, here is some code that has the frontLeft motor to spin
         // according to the value of leftPower:
-        frontLeft.setPower(leftPower);
+        frontLeft.setPower(leftValueY);
         // TODO: Add code to set the right motors to the rightPower value.
-        frontRight.setPower(rightPower);
+        frontRight.setPower(leftValueX);
+        if (isPrecisionOn){
+            frontRight.setPower(leftValueX/2);
+            frontLeft.setPower(leftValueY/2);
+        }
     }
-
+    public void togglePrecisionMode(){
+        isPrecisionOn = !isPrecisionOn;
+    }
 
     // You can ignore all of the code undearneat this comment -->
     // You won't have to touch it.
